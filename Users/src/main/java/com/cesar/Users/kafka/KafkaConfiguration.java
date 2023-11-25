@@ -14,21 +14,16 @@ import org.springframework.kafka.core.KafkaTemplate;
 @Configuration
 public class KafkaConfiguration {
 
-	@Bean
-	public DefaultKafkaProducerFactory<Integer, String> kafkaProducerFactory(){
-		
-		Map<String, Object> configs = new HashMap<>();
-		
-		configs.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-		configs.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, IntegerSerializer.class);
-		configs.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-		
-		return new DefaultKafkaProducerFactory<>( configs );
-	}
+	//Producer
 	
 	@Bean
 	public KafkaTemplate<Integer, String> kafkaTemplate(){
 		
-		return new KafkaTemplate<>( kafkaProducerFactory() );
+		Map<String, Object> configs = new HashMap<>();
+		configs.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+		configs.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, IntegerSerializer.class);
+		configs.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+		
+		return new KafkaTemplate<>( new DefaultKafkaProducerFactory<>( configs ) );
 	}
 }

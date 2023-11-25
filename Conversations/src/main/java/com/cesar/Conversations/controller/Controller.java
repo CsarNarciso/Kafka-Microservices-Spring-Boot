@@ -1,21 +1,35 @@
 package com.cesar.Conversations.controller;
 
-import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.stereotype.Component;
+import java.util.Arrays;
+import java.util.List;
 
-@Component
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.cesar.Conversations.entity.Conversation;
+
+@RestController
+@RequestMapping("/conversations")
 public class Controller {
 
-	@KafkaListener(id = "getConversations", topics = "getConversations_producer")
-	public void getConversations_consumer(Long idUser) {
+	@GetMapping("/{userId}")
+	private ResponseEntity<?> getByUserId(@PathVariable Long userId) {
 		
-		System.out.println( "------------" + idUser );
+		List<String> userConversations = conversations.stream()
+				.filter( c -> c.getIdSender().equals(userId) )
+				.map( c -> c.getNameAddressee() ).toList();
+		
+		return ResponseEntity.ok( userConversations ); 
 	}
+
 	
-//	private List<Conversation_DTO> conversations = Arrays.asList(
-//			
-//			new Conversation_DTO(5, "Jack"),
-//			new Conversation_DTO(1, "Alexa"),
-//			new Conversation_DTO(5, "Joel")
-//			);
+	private List<Conversation> conversations = Arrays.asList(
+			
+			new Conversation(Long.valueOf(5), "Jack"),
+			new Conversation(Long.valueOf(1), "Alexa"),
+			new Conversation(Long.valueOf(5), "Jenna")
+			);
 }

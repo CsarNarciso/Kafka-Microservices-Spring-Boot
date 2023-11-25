@@ -9,9 +9,9 @@ import org.springframework.kafka.config.TopicBuilder;
 public class Topics {
 
 	@Bean
-	public NewTopic getConversations_producer() {
+	public NewTopic getConversations() {
 		
-		return TopicBuilder.name( "getConversations_producer" )
+		return TopicBuilder.name( "getConversations" )
 				.partitions( 2 )
 				.replicas( 1 )
 				.build();
